@@ -50,6 +50,7 @@ List all dependencies of a check.
 Add a dependency to a check.
 
 - Uses write-level authentication
+- `403` if the check belongs to a different project, `404` if the check doesn't exist
 - JSON body:
   - `dep` (required) — UUID string of the check to add as a dependency
 - Validation (in this order):
@@ -62,7 +63,6 @@ Add a dependency to a check.
 - `400` with `{"error": "too many dependencies"}` if the check already has 10 dependencies
 - If new, add it and return `201`
 - Response body: `{"dependencies": [...]}` (same format as GET)
-- `403` if the check belongs to a different project, `404` if the check doesn't exist
 
 ### `POST /api/v3/checks/<uuid:code>/remove-dep`
 

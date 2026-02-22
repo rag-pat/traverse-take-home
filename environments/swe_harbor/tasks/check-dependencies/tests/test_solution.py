@@ -61,6 +61,18 @@ class CheckDependencyModelTestCase(BaseTestCase):
         self.other.delete()
         self.assertEqual(self.check.dependencies.count(), 0)
 
+    def test_deps_count_in_checks_api(self):
+        """deps_count should appear in GET /api/v3/checks/ list response."""
+        self.check.dependencies.add(self.other)
+        r = self.client.get(
+            "/api/v3/checks/",
+            HTTP_X_API_KEY="X" * 32,
+        )
+        self.assertEqual(r.status_code, 200)
+        checks = r.json()["checks"]
+        main = [c for c in checks if c["name"] == "Web"][0]
+        self.assertEqual(main["deps_count"], 1)
+
 
 class SelectChannelsSuppressionTestCase(BaseTestCase):
     """Tests for Flip.select_channels() dependency suppression."""

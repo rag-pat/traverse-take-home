@@ -96,7 +96,7 @@ Clone a check.
   1. Look up source check by UUID. Return `404` if not found.
   2. Verify the check belongs to the caller's project. Return `403` if not.
   3. Determine target project:
-     - If `target_api_key` is provided, look up the project with that API key. Return `400` with `{"error": "invalid target_api_key"}` if no project matches.
+     - If `target_api_key` is provided, look up the project whose write `api_key` matches `target_api_key`. Return `400` with `{"error": "invalid target_api_key"}` if no project matches.
      - If not provided, clone into the same project.
   4. Check capacity: `target_project.num_checks_available() > 0`. Return `403` with `{"error": "target project has no checks available"}` if at capacity.
   5. Call `check.clone(target_project)`.
@@ -128,7 +128,7 @@ path("checks/<uuid:code>/clones/", views.check_clones, name="hc-api-clones"),
 
 ## 6. `Check.to_dict()` (`/app/hc/api/models.py`)
 
-Add `"clones_count"` (integer) to the dict, before the `if self.kind == "simple":` block. It should be the number of `CloneLog` entries where this check is the source.
+Add `"clones_count"` (integer) to the dict. It should be the number of `CloneLog` entries where this check is the source.
 
 ## Constraints
 

@@ -42,7 +42,7 @@ Mute a channel for a given duration.
   - `duration` (required) — integer, number of seconds to mute (1–31536000, i.e. up to 1 year)
 - Validation:
   - `400` with `{"error": "missing duration"}` if not provided
-  - `400` with `{"error": "invalid duration"}` if not an integer
+  - `400` with `{"error": "invalid duration"}` if not an integer (floats are rejected)
   - `400` with `{"error": "duration out of range"}` if < 1 or > 31536000
 - Set `muted_until` to a datetime that is `duration` seconds from now, then save
 - If already muted, just overwrites with the new value (no special handling)
